@@ -104,6 +104,7 @@ type State = {
   isPluginsTabExpanded: boolean,
   isPresetsTabExpanded: boolean,
   isSettingsTabExpanded: boolean,
+  isVersionTabExpanded: boolean,
 };
 
 // The choice of Component over PureComponent is intentional here.
@@ -123,6 +124,7 @@ class ExpandedContainer extends Component<Props, State> {
       isPresetsTabExpanded: Object.keys(props.presetState).some(
         p => props.presetState[p].isEnabled
       ),
+      isVersionTabExpanded: false,
       isSettingsTabExpanded: true, // TODO
     };
   }
@@ -164,6 +166,7 @@ class ExpandedContainer extends Component<Props, State> {
       isPluginsTabExpanded,
       isPresetsTabExpanded,
       isSettingsTabExpanded,
+      isVersionTabExpanded,
     } = this.state;
 
     const disableEnvSettings =
@@ -485,6 +488,20 @@ class ExpandedContainer extends Component<Props, State> {
             showOfficialExternalPlugins={showOfficialExternalPlugins}
             styles={styles}
           />
+          <AccordionTab
+            className={styles.section}
+            isExpanded={isVersionTabExpanded}
+            label={`v${String(babelVersion)}`}
+            onToggleExpanded={this.handleToggleTabExpanded}
+            tabKey="version"
+          >
+            <label className={styles.settingsLabel}>
+              <a href="/repl">Stable (6.x)</a>
+            </label>
+            <label className={styles.settingsLabel}>
+              <a href="/repl/#?build=master">Master (7.x)</a>
+            </label>
+          </AccordionTab>
         </div>
         {babelVersion && (
           <div className={styles.versionRow} title={`v${babelVersion}`}>
